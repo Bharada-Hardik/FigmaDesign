@@ -1,6 +1,8 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './App.css';
 import Header from './Components/Header';
+import Buying from './Components/Buying';
+
 
 
 function App() {
@@ -11,6 +13,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <Header />
     </QueryClientProvider>
+   
+    // <Form/>
   );
 }
 

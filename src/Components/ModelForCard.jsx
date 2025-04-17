@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import imgsr from '../assets/beef-tacos.jpg';
 
-const ModelForCard = ({ handleModelX, handleRemoveCard }) => {
+const ModelForCard = ({ handleModelX,removeListCart,id, handleRemoveCard }) => {
   const [proVal, setProVal] = useState(0);
 
   useEffect(() => {
@@ -10,7 +10,13 @@ const ModelForCard = ({ handleModelX, handleRemoveCard }) => {
       setProVal((prevVal) => {
         if (prevVal + 10 >= 700) {
           clearInterval(interval);
+          console.log('hard', id)
+          handleRemoveCard(true)
+          
           handleModelX()
+          removeListCart(id)
+          // console.log('hcyge',className)
+       
           return 700;
         }
         return prevVal + 10;
@@ -25,7 +31,7 @@ const ModelForCard = ({ handleModelX, handleRemoveCard }) => {
     <div className="fixed top-0 bottom-0 left-0 right-0 bg-gray-400 bg-white/20 rounded-xl shadow-[0_4px_30px_rgba(0,0,0,0.1)] backdrop-blur-[3.6px] border border-white/30 flex items-center justify-center">
       <div className="px-4 border bg-pink-800 w-[350px] overflow-y-auto h-[300px] rounded-md py-3">
         <div className="flex  justify-between">
-          <h3 className="text-white">List Of Data</h3>
+          <h3 className="text-white">Remove Data from the Cart</h3>
           <button className="border p-1 rounded-full text-white" onClick={handleModelX}>
             X
           </button>
@@ -48,7 +54,7 @@ const ModelForCard = ({ handleModelX, handleRemoveCard }) => {
               <p>{item.name}</p> 
             </div>
           ))} */}
-          <button className='px-3 py-1 border border-black' onClick={() => { handleRemoveCard(false);  handleModelX()}
+          <button className='px-3 py-1 border border-black' onClick={() => { handleRemoveCard(false), handleModelX() }
           }>Cancel</button>
         </div>
       </div>

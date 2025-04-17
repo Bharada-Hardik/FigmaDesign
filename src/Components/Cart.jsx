@@ -5,12 +5,22 @@ import SetPrice from './SetPrice'
 import { removeToTheCart } from '../ListOfAddToCartReducer'
 import { motion } from 'motion/react'
 import ModelForCard from './ModelForCard'
+import Buying from './Buying'
 
 const Cart = () => {
   const [showModel, setShowModel] = useState(false)
   const [data, setData] = useState([])
   const [showModlex, setShowModelx] = useState(false)
   const [isRemoveCard,setIsRemovedCard]=useState(false)
+  const [id ,setId]=useState(-1);
+  const [showBuyCompo,setShowBuyCompo]=useState(false)
+
+  function showComoBuy(){
+    setShowBuyCompo(prev=>!prev)
+  }
+  function handlerId(id){
+    setId(id)
+  }
 
   const lengthOfListOfCartToadd = useSelector((state) => state.listOfAddtocart.listOfAddtocart)
   const dispatch = useDispatch()
@@ -20,20 +30,30 @@ const Cart = () => {
     console.log('cart is Pressed')
   }
   function handleModelX(){
-    setShowModelx(prev => !prev)
+  //  if(!isShow){
+  //   setShowModelx(prev => !prev)
+  //  }
+  //  else{
+  //   setShowModelx(isShow)
+  //  }
+  console.log(showModlex)
+  setShowModelx(prev => !prev)
   }
   useEffect(() => {
     fetchingImages().then(res => setData(res)).catch(err => err)
   }, [])
-  function handleRemoveCard(){
-    setIsRemovedCard(prev=>!prev)
-
+  function handleRemoveCard(isRemove){
+    // setIsRemovedCard(false)
+      // console.log(isRemove)
+      setIsRemovedCard(isRemove)
+     
+    
   }
-  function removeListCart(id) {
+
+   const removeListCart=(id)=> {
     const index = lengthOfListOfCartToadd.indexOf(Number(id));
     if (index) {
       setShowModelx((prev) => !prev)
-     
     }
     
     if(isRemoveCard){
@@ -41,6 +61,7 @@ const Cart = () => {
     }
 
   }
+
 
   const Model = () => {
     return (
@@ -65,7 +86,7 @@ const Cart = () => {
                       <span>{item.title} </span>
                       {/* <span>${item.price}</span> */}
                       <div className='flex gap-1'>
-                        <SetPrice removeListCart={removeListCart}  handleClick={handleClick} className={item.id} price={item.price} />
+                        <SetPrice removeListCart={removeListCart} id={id} handlerId={handlerId} handleModelX={handleModelX}  handleClick={handleClick} className={item.id} price={item.price} />
 
 
                       </div>
@@ -84,10 +105,15 @@ const Cart = () => {
             </ul>
           </div>
 
-          <div className='relative flex justify-center items-center bg-yellow-400 my-3 p-1 rounded-md text-rose-400 font-bold active:scale-95 active:transition-all duration-2000 ease-in-out'>
-            <button>Buy Now</button>
+          <div  onClick={()=>setShowBuyCompo(true)} className='relative flex justify-center items-center bg-yellow-400 my-3 p-1 rounded-md text-rose-400 font-bold active:scale-95 active:transition-all duration-2000 ease-in-out'>
+            <button className=''>Buy Now</button>
+            
           </div>
+          {
+              showBuyCompo && <Buying showComoBuy={showComoBuy}/>
+            }
         </div>
+
 
       </div>
 
@@ -96,17 +122,17 @@ const Cart = () => {
 
   return (
     <div className='text-white'>
-      <motion.button whileTap={{ rotateY: 210 }} transition={{ type: 'spring', stiffness: 300 }} onClick={() => setShowModel(handleClick)} className='cursor-pointer text-white active:text-blue-500 border '>Cart {lengthOfListOfCartToadd && lengthOfListOfCartToadd.length}</motion.button>
+      <motion.button whileTap={{ rotateY: 10 }} transition={{ type: 'spring', stiffness: 300 }} onClick={() => setShowModel(handleClick)} className='cursor-pointer text-white active:text-blue-500 border '>Cart {lengthOfListOfCartToadd && lengthOfListOfCartToadd.length}</motion.button>
       {
         showModel && <Model />
 
       }
       {
-        showModlex && <ModelForCard handleModelX={handleModelX} handleRemoveCard={handleRemoveCard}/>
+        showModlex && <ModelForCard id={id} removeListCart={removeListCart} handleModelX={handleModelX} handleRemoveCard={handleRemoveCard}/>
       }
 
     </div>
   )
 }
 
-export default Cart
+export default Cart 
